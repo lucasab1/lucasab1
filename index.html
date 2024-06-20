@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Enviar dados de cotação</title>
@@ -22,11 +22,16 @@
                     user: user
                 })
             })
-          .then(response => response.text())
+          .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro na resposta da rede.');
+                }
+                return response.text();
+            })
           .then(data => {
                 let mensagem;
                 if (aprove === 'A') {
-                    mensagem = 'Cotação aprovada';
+                    mensagem = 'Cotação aprovada.';
                 } else if (aprove === 'R') {
                     mensagem = 'Cotação reprovada';
                 } else {
@@ -34,7 +39,10 @@
                 }
                 alert(mensagem);
             })
-          .catch(error => console.error('Erro:', error));
+          .catch(error => {
+                console.error('Erro:', error);
+                alert('Ocorreu um erro ao enviar os dados.');
+            });
         }
 
         enviarDados();
